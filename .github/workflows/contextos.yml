@@ -1,0 +1,21 @@
+name: Context
+run-name: Learning to use Contexts!
+on: push
+env:
+  learning: Learning
+  topic: Github-Actions
+  context: Contexts
+  
+jobs:
+  Context-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display environment variables
+        run: echo "${{ env.learning }} ${{ env.topic }} ${{ env.context }}"
+          
+  check-main:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploying on branch
+        run: echo "Deploying on branch $GITHUB_REF"
