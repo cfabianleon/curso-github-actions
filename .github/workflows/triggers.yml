@@ -1,30 +1,63 @@
-name: Addition Workflow
-
+name: Triggers
+run-name: I am learning to use different Triggers!
 on:
-  pull_request:
+  push:
     branches:
-      - main 
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.js'
+  issues:
+    types:
+      - labeled
   workflow_dispatch:
     inputs:
-      number1:
-        description: 'First number'
+      favorite_language:
+        description: 'Favorite language'
+        default: JavaScript
         required: true
-        default: '1'
-      number2:
-        description: 'Second number'
+        type: choice
+        options:
+        - Python
+        - JavaScript
+        - Go
+      name:
+        description: 'Your name'
         required: true
-        default: '1'
-
-
+        default: John
+        type: string
+  schedule:
+    - cron: '15 22 * * *'
 jobs:
-  add:
+  hello-world-manual:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Setup Node.js
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set name
+        run: echo "USERNAME=${{ inputs.name }}" >> $GITHUB_ENV
+      - name: Set language
+        run: echo "LANGUAGE=${{ inputs.favorite_language }}" >> $GITHUB_ENV
+      - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
-      - name: Add Numbers
-        run: node add.js ${{ github.event.inputs.number1 }} ${{ github.event.inputs.number2 }}
+          node-version: 14
+          
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Node.js Script
+        run: node language.js
+
+
+  hello-world:
+    if: ${{ github.event_name != 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set variable
+        run: echo "USERNAME=${{ github.actor }}" >> $GITHUB_ENV
+      - name: Run script
+        run: node app.js
