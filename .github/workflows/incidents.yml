@@ -1,0 +1,67 @@
+name: Incidents
+
+on:
+    workflow_dispatch:
+        inputs:
+          incidentName:
+            description: 'Incident Name'
+            required: true
+            default: 'Incident Name'
+          severity:
+            description: 'Severity Level'
+            required: true
+            type: choice
+            options:
+              - Low
+              - Medium
+              - High
+
+jobs:
+  incident:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Start Deployment Timer for DataDog
+      id: start_timer
+      run: echo "STARTED_AT=$(date +%s%N)" >> $GITHUB_ENV
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: End Deployment Timer
+      id: end_timer
+      run: echo "FINISHED_AT=$(date +%s%N)" >> $GITHUB_ENV
+
+    - name: Print Incident Details
+      run: |
+        echo "Incident Name: ${{ github.event.inputs.incidentName }}"
+        echo "Severity Level: ${{ github.event.inputs.severity }}"
+
+    # - name: Send Deployment metadata to DataDog
+    #   env:
+    #     DD_API_KEY: ${{ secrets.DD_API_KEY }}
+    #   run: |
+    #     curl -X POST "https://api.datadoghq.com/api/v2/dora/incident" \
+    #         -H "Accept: application/json" \
+    #         -H "Content-Type: application/json" \
+    #         -H "DD-API-KEY: ${DD_API_KEY}" \
+    #         -d @- << EOF
+    #     {
+    #         "data": {
+    #         "attributes": {
+    #             "service": "cosmic-rewards",
+    #             "started_at": ${{ env.INCIDENT_STARTED_AT }},
+    #             "finished_at": ${{ env.INCIDENT_FINISHED_AT }},
+    #             "git": {
+    #             "commit_sha": "${{ github.sha }}",
+    #             "repository_url": "${{ github.server_url }}/${{ github.repository }}"
+    #             },
+    #             "env": "prod",
+    #             "name": "Incident Name", 
+    #             "severity": "High" 
+    #         }
+    #         }
+    #     }
+    #     EOF
+    
