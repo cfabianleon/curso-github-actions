@@ -11,13 +11,13 @@ on:
             description: 'Start Date (YYYY-MM-DD)'
             required: true
           startTime:
-            description: 'Start Time (HH:MM)'
+            description: 'Start Time (HH:MM) 24-hour format'
             required: true
           endDate:
                 description: 'End Date (YYYY-MM-DD)'
                 required: true    
           endTime:
-            description: 'End Time (HH:MM)'
+            description: 'End Time (HH:MM) 24-hour format'
             required: true              
           severity:
             description: 'Severity Level'
@@ -63,30 +63,30 @@ jobs:
         echo "INCIDENT_FINISHED_AT=$END_TIMESTAMP" >> $GITHUB_ENV
 
 
-    # - name: Send Deployment metadata to DataDog
-    #   env:
-    #     DD_API_KEY: ${{ secrets.DD_API_KEY }}
-    #   run: |
-    #     curl -X POST "https://api.datadoghq.com/api/v2/dora/incident" \
-    #         -H "Accept: application/json" \
-    #         -H "Content-Type: application/json" \
-    #         -H "DD-API-KEY: ${DD_API_KEY}" \
-    #         -d @- << EOF
-    #     {
-    #         "data": {
-    #         "attributes": {
-    #             "service": "cosmic-rewards",
-    #             "started_at": ${{ env.INCIDENT_STARTED_AT }},
-    #             "finished_at": ${{ env.INCIDENT_FINISHED_AT }},
-    #             "git": {
-    #             "commit_sha": "${{ github.sha }}",
-    #             "repository_url": "${{ github.server_url }}/${{ github.repository }}"
-    #             },
-    #             "env": "prod",
-    #             "name": "Incident Name", 
-    #             "severity": "High" 
-    #         }
-    #         }
-    #     }
-    #     EOF
-    
+    - name: Send Incident metadata to DataDog
+      env:
+        DD_API_KEY: ${{ secrets.DD_API_KEY }}
+      run: |
+        curl -f -X POST "https://api.datadoghq.com/api/v2/dora/incident" \
+            -H "Accept: application/json" \
+            -H "Content-Type: application/json" \
+            -H "DD-API-KEY: ${DD_API_KEY}" \
+            -d @- << EOF
+        {
+            "data": {
+            "attributes": {
+                "service": "cosmic-rewards",
+                "started_at": ${{ env.INCIDENT_STARTED_AT }},
+                "finished_at": ${{ env.INCIDENT_FINISHED_AT }},
+                "git": {
+                "commit_sha": "${{ github.sha }}",
+                "repository_url": "${{ github.server_url }}/${{ github.repository }}"
+                },
+                "env": "prod",
+                "name": "${{ github.event.inputs.incidentName }}", 
+                "severity": "${{ github.event.inputs.severity }}" 
+            }
+            }
+        }
+        EOF
+
