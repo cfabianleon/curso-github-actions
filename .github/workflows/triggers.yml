@@ -40,7 +40,7 @@ jobs:
       - name: Set language
         run: echo "LANGUAGE=${{ inputs.favorite_language }}" >> $GITHUB_ENV
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: 14
           
