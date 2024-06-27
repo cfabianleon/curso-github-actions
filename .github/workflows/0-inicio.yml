@@ -18,16 +18,6 @@ jobs:
 
       - name: Build and Upload to TestFlight
         run: echo "Build and upload steps go here"
-        # Replace the above echo command with the actual steps needed to build and upload your app to TestFlight
-
-      - name: Manual Approval
-        uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: cfabianleon
-          minimum-approvals: 1
-          issue-title: "Approval needed for publishing to CocoaPods"
-          issue-body: "Please approve or deny the publishing of the latest build to CocoaPods."
 
   build-cocoapods:
     needs: [build-and-upload-testflight]
