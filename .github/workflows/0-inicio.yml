@@ -8,16 +8,6 @@ name: cocoapods
 # Reference https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows
 on:
   push:
-  workflow_dispatch:
-    inputs:
-      publish:
-        description: 'Do you want to publish to CocoaPods?'
-        required: true
-        default: 'no'
-        type: choice
-        options:
-        - yes
-        - no
 
 
 # Reference https://docs.github.com/en/actions/security-guides/automatic-token-authentication
