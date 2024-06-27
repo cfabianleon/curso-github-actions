@@ -45,7 +45,6 @@ jobs:
 
   build-cocoapods:
     if: ${{ inputs.publish == 'yes' }}
-    needs: [manual-approval]
     runs-on: ubuntu-latest
     steps:
       - name: Await manual approval before publishing to CocoaPods
