@@ -36,14 +36,8 @@ jobs:
       - name: Await manual approval before publishing to CocoaPods
         run: echo "Manual approval required to proceed with publishing to CocoaPods."
 
-  manual-approval:
-    needs: build-and-upload-testflight
-    runs-on: ubuntu-latest
-    steps:
-      - name: Await manual approval before publishing to CocoaPods
-        run: echo "Manual approval required to proceed with publishing to CocoaPods."
-
   build-cocoapods:
+    environment: publish-approval
     if: ${{ inputs.publish == 'yes' }}
     runs-on: ubuntu-latest
     steps:
