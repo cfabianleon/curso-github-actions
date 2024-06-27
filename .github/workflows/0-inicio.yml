@@ -38,7 +38,7 @@ jobs:
           approvers: cfabianleon
           minimum-approvals: 1
           issue-title: "Approval needed for uploading to S3"
-          issue-body: "Please approve or deny the upload of the latest build to S3."
+          issue-body: "Please approve or deny the upload for cocoa pods."
 
   upload-to-s3:
     needs: [build-cocoapods]
