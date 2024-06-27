@@ -26,6 +26,7 @@ jobs:
         run: echo "Manual approval required to proceed with publishing to CocoaPods."
 
   build-cocoapods:
+    needs: [build-and-upload-testflight]
     environment: publish-approval
     runs-on: ubuntu-latest
     steps:
