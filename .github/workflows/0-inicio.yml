@@ -1,4 +1,4 @@
-name: Paso 0, Inicializar repo
+name: cocoapods
 
 # This step triggers after the learner creates a new repository from the template
 # This step sets STEP to 1
