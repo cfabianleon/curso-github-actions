@@ -52,7 +52,6 @@ jobs:
         run: echo "Manual approval required to proceed with publishing to CocoaPods."
         
   upload-to-s3:
-    name: Verificar paso actual
     needs: [build-cocoapods]
     runs-on: ubuntu-latest
     steps:
@@ -60,7 +59,6 @@ jobs:
         run: echo "Manual approval required to proceed with publishing to CocoaPods."
 
   push-to-cocoapods:
-    name: Verificar paso actual
     needs: [build-cocoapods]
     runs-on: ubuntu-latest
     steps:
