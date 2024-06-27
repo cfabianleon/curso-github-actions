@@ -1,4 +1,4 @@
-name: Incidents
+name:  Incidents
 
 on:
     workflow_dispatch:
