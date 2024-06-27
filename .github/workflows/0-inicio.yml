@@ -1,4 +1,4 @@
-name: Paso 0, Inicializar repo
+name: cocoapods
 
 # This step triggers after the learner creates a new repository from the template
 # This step sets STEP to 1
@@ -7,10 +7,18 @@ name: Paso 0, Inicializar repo
 # This will run every time we create push a commit to `main`
 # Reference https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Do you want to publish to CocoaPods?'
+        required: true
+        default: 'no'
+        type: choice
+        options:
+        - yes
+        - no
+
 
 # Reference https://docs.github.com/en/actions/security-guides/automatic-token-authentication
 permissions:
@@ -21,72 +29,39 @@ permissions:
 jobs:
   # Get the current step from .github/script/STEP so we can
   # limit running the main job when the learner is on the same step.
-  obtener_paso_actual:
+  build-and-upload-testflight:
     name: Verificar paso actual
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - id: obtener_paso
-        run: |
-          echo "paso_actual=$(cat ./.github/script/STEP)" >> $GITHUB_OUTPUT
-    outputs:
-      paso_actual: ${{ steps.obtener_paso.outputs.paso_actual }}
+      - name: Await manual approval before publishing to CocoaPods
+        run: echo "Manual approval required to proceed with publishing to CocoaPods."
 
-  inicializar:
-    name: Inicializar repo
-    needs: obtener_paso_actual
-
-    # We will only run this action when:
-    # 1. This repository isn't the template repository
-    # 2. The STEP is currently 0
-    # Reference https://docs.github.com/en/actions/learn-github-actions/contexts
-    # Reference https://docs.github.com/en/actions/learn-github-actions/expressions
-    if: >-
-      ${{ !github.event.repository.is_template
-          && needs.obtener_paso_actual.outputs.paso_actual == 0 }}
-
-    # We'll run Ubuntu for performance instead of Mac or Windows
+  manual-approval:
+    needs: build-and-upload-testflight
     runs-on: ubuntu-latest
-
     steps:
-      # We'll need to check out the repository so that we can edit the README
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Let's get all the branches
+      - name: Await manual approval before publishing to CocoaPods
+        run: echo "Manual approval required to proceed with publishing to CocoaPods."
 
-      # Make a branch, file, and commit for the learner
-      - name: Preparar rama y archivo
-        run: |
-          echo "Make sure we are on step 0"
-          if [ "$(cat .github/script/STEP)" != 0 ]
-          then
-            echo "El paso actual no es 0"
-            exit 0
-          fi
-          echo "Creando una rama"
-          BRANCH=aprendiendo-github-actions
-          git checkout -b $BRANCH
-          echo "Creando un commit"
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git commit --allow-empty --message="Create an empty commit"
-          
-          echo "Push"
-          git push --set-upstream origin $BRANCH
-          
-          echo "Restaurar main"
-          git checkout main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  build-cocoapods:
+    if: ${{ inputs.publish == 'yes' }}
+    needs: [manual-approval]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Await manual approval before publishing to CocoaPods
+        run: echo "Manual approval required to proceed with publishing to CocoaPods."
+        
+  upload-to-s3:
+    needs: [build-cocoapods]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Await manual approval before publishing to CocoaPods
+        run: echo "Manual approval required to proceed with publishing to CocoaPods."
 
-      # Update README to close <details id=0> and open <details id=1>
-      # and set STEP to '1'
-      - name: Actualizar a paso 1
-        uses: skills/action-update-step@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          from_step: 0
-          to_step: 1
-          branch_name: aprendiendo-github-actions
+  push-to-cocoapods:
+    needs: [upload-to-s3]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Await manual approval before publishing to CocoaPods
+        run: echo "Manual approval required to proceed with publishing to CocoaPods."
+      
