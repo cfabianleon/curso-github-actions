@@ -59,7 +59,7 @@ jobs:
         run: echo "Manual approval required to proceed with publishing to CocoaPods."
 
   push-to-cocoapods:
-    needs: [build-cocoapods]
+    needs: [upload-to-s3]
     runs-on: ubuntu-latest
     steps:
       - name: Await manual approval before publishing to CocoaPods
