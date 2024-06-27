@@ -20,7 +20,6 @@ jobs:
   # Get the current step from .github/script/STEP so we can
   # limit running the main job when the learner is on the same step.
   build-and-upload-testflight:
-    name: Verificar paso actual
     runs-on: ubuntu-latest
     steps:
       - name: Await manual approval before publishing to CocoaPods
@@ -28,7 +27,6 @@ jobs:
 
   build-cocoapods:
     environment: publish-approval
-    if: ${{ inputs.publish == 'yes' }}
     runs-on: ubuntu-latest
     steps:
       - name: Await manual approval before publishing to CocoaPods
