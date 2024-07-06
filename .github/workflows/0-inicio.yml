@@ -37,7 +37,7 @@ jobs:
           secret: ${{ secrets.GITHUB_TOKEN }}
           approvers: cfabianleon
           minimum-approvals: 1
-          issue-title: "Approval needed for uploading to S3"
+          issue-title: "Approval needed"
           issue-body: "Please approve or deny the upload for cocoa pods."
 
   upload-to-s3:
