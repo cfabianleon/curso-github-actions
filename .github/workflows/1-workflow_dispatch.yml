@@ -15,7 +15,7 @@ on:
 jobs:
   wolverine:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.publish == 'yes' }}  
+    if: ${{ github.event.inputs.publish != 'no' }}  
     steps:
       - run: echo "wolverine"
 
