@@ -11,17 +11,16 @@ on:
             options:
             - yes
             - no
+
 jobs:
   wolverine:
+    runs-on: ubuntu-latest
     if: ${{ github.event.inputs.publish == 'yes' }}  
-    runs-on: ubuntu-latest
     steps:
-      - run: |
-          echo "wolverine"
+      - run: echo "wolverine"
+
   ironman:  
-    if: ${{ github.event.inputs.publish == 'yes' }}           
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.publish == 'yes' }}           
     steps:
-      - run: |
-          echo "Iron Man"
-                                    
+      - run: echo "Iron Man"
