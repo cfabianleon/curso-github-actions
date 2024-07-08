@@ -1,26 +1,22 @@
 name: Marvel Movies List
-
 on:
-    workflow_dispatch:
-        inputs:
-          publish:
-            description: 'Do you want to publish to CocoaPods?'
-            required: true
-            default: 'no'
-            type: choice
-            options:
-            - yes
-            - no
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Do you want to publish to CocoaPods?'
+        required: true
+        default: false
+        type: boolean
 
 jobs:
   wolverine:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.publish != 'no' }}  
+    if: ${{ github.event.inputs.publish == true }}
     steps:
       - run: echo "wolverine"
-
-  ironman:  
+  
+  ironman:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.publish == 'yes' }}           
+    if: ${{ github.event.inputs.publish == false }}
     steps:
       - run: echo "Iron Man"
