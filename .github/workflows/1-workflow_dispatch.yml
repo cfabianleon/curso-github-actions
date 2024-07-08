@@ -18,8 +18,4 @@ jobs:
     steps:
       - run: echo "wolverine"
   
-  ironman:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.publish == 'no' }}
-    steps:
-      - run: echo "Iron Man"
+
